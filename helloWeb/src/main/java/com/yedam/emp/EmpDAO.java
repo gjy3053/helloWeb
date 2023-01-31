@@ -149,6 +149,26 @@ public class EmpDAO {
 		}
 		return r;
 	}
+	
+	//수정2
+	public int updateEmp(EmpVO emp) {
+		connect();
+		sql = "update emp_temp set hire_date = ?, email=?, job_id=?, last_name=? where employee_id = ?";
+		int r = 0;
+		try {
+			psmt = conn.prepareStatement(sql);
+			psmt.setString(1, emp.getHireDate());
+			psmt.setString(2, emp.getEmail());
+			psmt.setString(3, emp.getJobId());
+			psmt.setString(4, emp.getLastName());
+			psmt.setInt(5, emp.getEmployeeId());
+			
+			r = psmt.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return r;
+	}
 
 	// 삭제.
 	public int deleteEmp(int id) {

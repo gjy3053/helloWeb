@@ -12,9 +12,35 @@ import javax.servlet.http.HttpServletResponse;
 
 @WebServlet("/empListJson")
 public class EmpListJson extends HttpServlet {
+	
+	@Override
+	protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		req.setCharacterEncoding("utf-8");
+		
+		String id = req.getParameter("id");
+		String name = req.getParameter("name");
+		String job = req.getParameter("job");
+		String hire = req.getParameter("hire");
+		String mail = req.getParameter("mail");
+		
+		EmpVO vo = new EmpVO();
+		vo.setEmployeeId(Integer.parseInt(id));
+		vo.setLastName(name);
+		vo.setJobId(job);
+		vo.setHireDate(hire);
+		vo.setEmail(mail);
+		
+		System.out.println(vo);
+		
+		resp.getWriter().print("complete");
+		
+	}
 
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		req.setCharacterEncoding("utf-8");
+		
+		String parm = req.getParameter("param");
 		String id = req.getParameter("id");
 		String name = req.getParameter("name");
 		String job = req.getParameter("job");
@@ -29,11 +55,23 @@ public class EmpListJson extends HttpServlet {
 		vo.setEmail(mail);
 		
 		EmpDAO dao = new EmpDAO();
-		if(dao.addEmp(vo)>0) {
-			resp.getWriter().print("{\"retCode\" : \"Success\"}");
+		
+		//param = update => DB update.
+		//param =XXX -> DB insert
+		if(parm.equals("update")) {
+			if(dao.updateEmp(vo)>0) {
+				resp.getWriter().print("{\"retCode\" : \"Success\"}");
+			}else {
+				resp.getWriter().print("{\"retCode\" : \"Fail\"}");
+			}
 		}else {
-			resp.getWriter().print("{\"retCode\" : \"Fail\"}");
+			if(dao.addEmp(vo)>0) {
+				resp.getWriter().print("{\"retCode\" : \"Success\"}");
+			}else {
+				resp.getWriter().print("{\"retCode\" : \"Fail\"}");
+			}
 		}
+		
 	}
 
 	// 제어의 역전(Inversion Of Control)
@@ -61,9 +99,11 @@ public class EmpListJson extends HttpServlet {
 		// [{"id" : 100, "filrstName" : "Hong", "email" : "HONG".....}, {}, {}]
 		String json = "[";
 		for (int i = 0; i < list.size(); i++) {
-			json += "{\"id\" : " + list.get(i).getEmployeeId() + ", \"firstName\" : \"" + list.get(i).getFirstName()
-					+ "\", \"email\" : \"" + list.get(i).getEmail() + "\", \"hireDate\" : \""
-					+ list.get(i).getHireDate() + "\", \"job\" : \"" + list.get(i).getJobId() + "\"}";
+			json += "{\"id\" : " + list.get(i).getEmployeeId() 
+					+ ", \"firstName\" : \"" + list.get(i).getFirstName()
+					+ "\", \"lastName\" : \"" + list.get(i).getLastName()
+					+ "\", \"email\" : \"" + list.get(i).getEmail() + "\", \"hireDate\" : \"" 
+					+ list.get(i).getHireDate().substring(0,10) + "\", \"job\" : \"" + list.get(i).getJobId() + "\"}";
 			if (i + 1 != list.size()) {
 				json += ",";
 			}
