@@ -25,6 +25,8 @@ document.querySelector('thead input[type = "checkbox"]').addEventListener('chang
 document.querySelector('#delSelectedBtn').addEventListener('click', deleteCheckedFnc);
 
 
+
+
 // 데이터 한건을 활용해서 tr이라는 요쇼를 생성.
 function makeTr(item) {  //매개값으로 받아오면 그 값을 가지고 tr을 만들어서 반환해준다 , item은 객체타입{}
 	//result베열에 들어있는 값의 갯수만큼
@@ -53,11 +55,12 @@ function makeTr(item) {  //매개값으로 받아오면 그 값을 가지고 tr�
 	btn.addEventListener("click", modifyTrFunc);
 	td.append(btn);
 	tr.append(td);
-	
+
 	//체크박스
 	td = document.createElement("td");
 	let chk = document.createElement('input');
 	chk.setAttribute('type', 'checkbox');
+	chk.addEventListener("change", countCheck);
 	td.append(chk);
 	tr.append(td);
 	//tr.반환
@@ -89,12 +92,11 @@ function deleteCheckFunc(chk) {
 	})
 		.then((resolve) => resolve.json())
 		.then((result) => {
-			console.log(result);
+
 			if (result.retCode == "Success") {
-				alert("정상적으로 삭제 되었습니다.");
 				chk.parentElement.parentElement.remove();
 			} else if (result.retCode == "Fail") {
-				alert("삭제중 오류 발생");
+				console.log('error : ' + id);
 			}
 		})
 		.catch((reject) => console.log(reject));
@@ -143,10 +145,7 @@ function modifyTrFunc() {
 	td = document.createElement('td');
 	td.append(btn);
 	newTr.append(td);
-	
 
-	
-	
 	thisTr.replaceWith(newTr);
 
 }
@@ -160,25 +159,25 @@ function updateMemberFnc() {
 	let hDate = currTr.children[3].children[0].value;
 	let job = currTr.children[4].children[0].value;
 	//console.log(id, name, mail, hDate, job);
-	
+
 	fetch('../empListJson', {
-		method : 'POST',
-		headers : {'Content-Type' : 'application/x-www-form-urlencoded'},
-		body : 'param=update&id=' + id + '&name=' + name + '&mail=' + mail + '&hire=' + hDate + '&job=' + job
+		method: 'POST',
+		headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+		body: 'param=update&id=' + id + '&name=' + name + '&mail=' + mail + '&hire=' + hDate + '&job=' + job
 	})
-	.then(resolve => resolve.text())
-	.then(result => {
-		console.log(result)
-		if(result.indexOf('Success') != -1) {
-			alert("정상적으로 처리");
-			let newTr = makeTr({ id: id, lastName: name, email: mail, hireDate: hDate, job: job });
-			currTr.replaceWith(newTr);
-		}else {
-			console.log('error발생..')
-		}
-	})
-	.catch(reject => console.log(reject))
-	
+		.then(resolve => resolve.text())
+		.then(result => {
+			console.log(result)
+			if (result.indexOf('Success') != -1) {
+				alert("정상적으로 처리");
+				let newTr = makeTr({ id: id, lastName: name, email: mail, hireDate: hDate, job: job });
+				currTr.replaceWith(newTr);
+			} else {
+				console.log('error발생..')
+			}
+		})
+		.catch(reject => console.log(reject))
+
 }
 
 // 저장버튼 이벤트 콜백함수.
@@ -220,13 +219,13 @@ function addMemberFnc(evnt) {     //이벤트 콜백함수는 이벤트를 매�
 }
 
 //전체선택 체크박스
-function allCheckChange(){
+function allCheckChange() {
 	console.log(this.checked);
 	//tbody에 있는 체크박스 선택.
 	document.querySelectorAll('tbody input[type = "checkbox"]').forEach(chk => {
 		chk.checked = this.checked;
 	})
-	
+
 }
 
 // 선택삭제 처리
@@ -234,9 +233,27 @@ function deleteCheckedFnc() {
 	document.querySelectorAll('tbody input[type = "checkbox"]:checked').forEach(chk => {
 		//console.log(chk);
 		chk.addEventListener("click", deleteCheckFunc(chk));
-		
+
 	})
 }
+
+function countCheck() {
+	let i = 0, j = 0;
+	let check = document.querySelector('thead').children[0].children[7].children[0];
+	//let 
+	document.querySelectorAll('tbody input[type = "checkbox"]:checked').forEach(chk => {
+		i++;
+		if (chk.checked == true) {
+			j++;
+		}
+	})
+	if (i==j) {
+		check.checked = true;
+	}
+
+ 
+}
+
 
 
 
