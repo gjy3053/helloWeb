@@ -61,7 +61,7 @@ public class EmpDAO {
 	// List<Map<String, Object>>비교해서 보기
 	public List<EmpVO> empVoList() {
 		connect(); // 호출 반드시 하기
-		sql = "select * from emp_temp";
+		sql = "select * from emp_temp order by 1";
 		List<EmpVO> list = new ArrayList<>();
 		try {
 			stmt = conn.createStatement();

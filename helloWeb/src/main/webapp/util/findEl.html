@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>util/findEl.html</title>
+    <style>
+      div.outer {
+        background-color: yellow;
+        width: 540px;
+        height: 350px;
+      }
+      div.inner {
+        display: inline-block;
+        background-color: green;
+        height: 30px;
+        width: 120px;
+        margin: 2px;
+        border: 1px solid black;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="list" class="outer"></div>
+    <input type="text" id="search" />
+    <button id="btn">제거하기</button>
+    <a id="timer"></a>
+    <script>
+      let words = `Lorem ipsum dolor, sit amet consectetur adipisicing elit. Minima doloremque, eligendi autem reiciendis quis libero incidunt ut alias numquam mollitia nesciunt et ea, quisquam vitae eaque nihil quam sequi consectetur.`;
+      let items = words.split(" ");
+      items.forEach((word) => {
+        let div = document.createElement("div");
+        div.setAttribute("class", "inner");
+        div.innerText = word;
+        list.append(div);
+      });
+
+      document.querySelector("#btn").addEventListener("click", () => {
+        let content = search.value;
+        document.querySelectorAll(".inner").forEach((x) => {
+          if (x.innerText == content) {
+            x.remove();
+          }
+        });
+      });
+
+      var timeoutHandle;
+      function countdown(seconds) {
+        function tick() {
+          var counter = document.getElementById("timer");
+          counter.innerHTML = (seconds < 10 ? "0" : "") + String(seconds);
+          seconds--;
+          if (seconds >= 0) {
+            timeoutHandle = setTimeout(tick, 1000);
+          } else {
+            btn.disabled = true;
+          }
+        }
+        tick();
+      }
+      countdown(3);
+    </script>
+  </body>
+</html>

@@ -3,14 +3,19 @@
  * empList.js
  */
 //목록출력하기.
+let totalAry = []; //전체목록 담아놓을 용도.
 fetch("../empListJson")  //아작스 호출.
 	.then((resolve) => resolve.json())   // 가져온 데이터를 제이슨으로 바꿔준다
 	.then((result) => {
 		//배열관련 메소드: forEach, map, filter, reduce 메소드.
-		result.forEach(function(item, idx, arry) {
-			let tr = makeTr(item); //tr생성 후 반환.
-			list.append(tr);
-		});
+		localStorage.setItem('total', result.length); //페이징계산할때 사용
+		totalAry = result; //3페이지 4페이지 목록 추려냄
+		//result.forEach(function(item, idx, arry) {
+		//	let tr = makeTr(item); //tr생성 후 반환.
+		//	list.append(tr);
+		//});
+		showPages(12);
+		employeeList(12);
 	})
 	.catch((reject) => {
 		console.log(reject);
@@ -60,12 +65,33 @@ function makeTr(item) {  //매개값으로 받아오면 그 값을 가지고 tr�
 	td = document.createElement("td");
 	let chk = document.createElement('input');
 	chk.setAttribute('type', 'checkbox');
-	chk.addEventListener("change", countCheck);
+	chk.addEventListener("change", checkAllFnc);
 	td.append(chk);
 	tr.append(td);
 	//tr.반환
 	return tr;
 }
+
+//전체선택 체크박스 - 개발체크박스동기화
+function checkAllFnc() {
+	/*	let check = document.querySelector('thead').children[0].children[7].children[0];
+		let count = document.querySelectorAll('tbody input[type = "checkbox"]').length;
+		let i = document.querySelectorAll('tbody input[type = "checkbox"]:checked').length;
+		if (count == i) {
+			check.checked = true;
+		} else {
+			check.checked = false;
+		}*/
+
+	let allTr = document.querySelectorAll('tbody#list tr');   // id값이 list
+	let chkTr = document.querySelectorAll('tbody#list input[type = "checkbox"]:checked');
+	if (allTr.length == chkTr.length) {
+		document.querySelector('thead input[type="checkbox"]').checked = true;
+	} else {
+		document.querySelector('thead input[type="checkbox"]').checked = false;
+	}
+}
+
 // 삭제버튼 이벤트 콜백함수.
 function deleteRowFunc() {
 	let id = this.parentElement.parentElement.firstChild.innerText;
@@ -228,31 +254,82 @@ function allCheckChange() {
 
 }
 
-// 선택삭제 처리
-function deleteCheckedFnc() {
-	document.querySelectorAll('tbody input[type = "checkbox"]:checked').forEach(chk => {
-		//console.log(chk);
-		chk.addEventListener("click", deleteCheckFunc(chk));
+//선택삭제처리
+//fetch API => 비동기방식처리. => 동기식처리.(async, await)
+async function deleteCheckedFnc() {
+	let ids = [];
+	let chks = document.querySelectorAll('#list input[type="checkbox"]:checked')
 
-	})
-}
+	for (let i = 0; i < chks.length; i++) {
 
-function countCheck() {
-	let i = 0, j = 0;
-	let check = document.querySelector('thead').children[0].children[7].children[0];
-	//let 
-	document.querySelectorAll('tbody input[type = "checkbox"]:checked').forEach(chk => {
-		i++;
-		if (chk.checked == true) {
-			j++;
-		}
-	})
-	if (i==j) {
-		check.checked = true;
+		let id = chks[i].parentElement.parentElement.firstChild.innerText;
+		let resp = await fetch("../empListJson?del_id=" + id, {
+			method: "DELETE",
+		})
+		let json = await resp.json();
+		console.log(json);
+		ids.push(json);
 	}
 
- 
+	console.log('ids>>>>', ids);
+
+	processAfterFetch(ids); //자동새로고침기능 [{id:101, retCode:Success}, .....]
 }
+
+//화면처리
+function processAfterFetch(ary = []) {
+	let targetTr = document.querySelectorAll('#list tr');
+	console.log(targetTr, 'vs', ary);
+	targetTr.forEach(tr => {
+		for (let i = 0; i < ary.length; i++) {
+			if (tr.children[0].innerText == ary[i].id) {
+				if (ary[i].retCode == "Success") {
+					tr.remove(); //Success조건 하에 삭제
+
+				} else {
+					tr.setAttribute('class', 'delError');
+				}
+			}
+		}
+	})
+}
+
+
+//페이지 목록()
+function showPages(curPage = 5) {
+	let endPage = Math.ceil(curPage / 10) * 10;
+	let startPage = endPage - 9;
+	let realEnd = Math.ceil(255 / 10);
+	endPage = endPage > realEnd ? realEnd : endPage;
+	let paging = document.getElementById('paging');
+	for (let i = startPage; i <= endPage; i++) {
+		let aTag = document.createElement('a');
+		aTag.href = "index.html";
+		aTag.innerText = i;
+		paging.append(aTag);
+	}
+
+}
+
+//사원목록 ()
+function employeeList(curPage = 5) {
+	let end = curPage * 10;
+	let start = end - 9;
+	let newList = totalAry.filter((emp, idx) => {
+		return (idx+1) >= start && idx < end;
+	})
+
+	let lst = document.getElementById('list');
+	newList.forEach(emp => {
+		let tr = makeTr(emp);
+		lst.append(tr);
+	})
+}
+
+
+
+
+
 
 
 
