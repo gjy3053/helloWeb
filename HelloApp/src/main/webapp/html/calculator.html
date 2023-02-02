@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<style>
+* {
+      margin: 10px auto;
+      font-weight: bold;      
+    }
+
+    .all {
+      background-color: gainsboro;
+      border-spacing: 0.3em; /*칸 간격*/
+    }
+
+    tr {
+      text-align: center;
+    }
+
+    td {
+      color: black;
+      padding: 10px 15px;
+      position: relative;
+      bottom: 3px;
+    }
+
+    input {
+      height: 25px;
+      position: relative;
+      top: 5px;
+      text-align: right; /*text 입력시 오른쪽 정렬*/
+      border: none;
+    }
+
+    .four {
+      background-color: black;
+      color: white;      
+    }
+
+    .four:active {
+      box-shadow: 1px 1px 0 rgb(0,0,0,0.5);
+      position: relative; 
+      right: 0.1em;
+    }
+
+    .reset {
+      background-color: red;
+      color: white;
+    }
+
+    .reset:active {
+      box-shadow: 1px 1px 0 rgb(0,0,0,0.5);
+      position: relative;
+      left: 0.1em; 
+    }
+
+    .num {
+      background-color: white;
+      margin: 10px;
+    }
+
+    .num:active {
+      box-shadow: 1px 1px 0 rgb(0,0,0,0.5);
+      position: relative; 
+      left: 0.1em;
+    }
+</style>
+</head>
+ <table class="all">
+    <td colspan="4">
+      <input type="text" id="enter">
+    </td>
+    <tr>
+      <td class="num" onclick="add('7')">7</td>
+      <td class="num" onclick="add('8')">8</td>
+      <td class="num" onclick="add('9')">9</td>
+      <td class="four" onclick="add('+')">+</td>
+    </tr>
+
+    <tr>
+      <td class="num" onclick="add('4')">4</td>
+      <td class="num" onclick="add('5')">5</td>
+      <td class="num" onclick="add('6')">6</td>
+      <td class="four" onclick="add('-')">-</td>
+    </tr>
+
+    <tr>
+      <td class="num" onclick="add('1')">1</td>
+      <td class="num" onclick="add('2')">2</td>
+      <td class="num" onclick="add('3')">3</td>
+      <td class="four" onclick="add('*')">*</td>
+    </tr>
+
+    <tr>
+      <td class="reset" onclick="clearDisplay()">C</td>
+      <td class="num" onclick="add('0')">0</td>
+      <td class="four" onclick="compute()">=</td>
+      <td class="four" onclick="add('/')">/</td>
+    </tr>
+
+  </table>
+
+  <script>
+
+let enter = document.querySelector("#enter");
+
+  function add(num) {
+    enter.value += num;
+
+  }
+  
+  function compute() {
+  let num =  enter.value;
+  if(num.indexOf("+")>0){
+       let numbers = num.split("+");
+       let result = 0;
+       for(let i=0; i<numbers.length; i++) {  
+         result += parseInt(numbers[i]); 
+       } 
+       enter.value = result;
+    }
+  }
+
+function clearDisplay() {
+enter.value = "";
+}
+
+
+
+  </script>
+</body>
+</html>

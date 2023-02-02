@@ -12,13 +12,47 @@
    		 margin-left : 2px;
    		 margin-right : 2px;
    		 }
+   		 
+   		 .center {
+ 		 text-align: center;
+		}
+
+.pagination {
+  display: inline-block;
+}
+
+.pagination a {
+  color: black;
+  float: left;
+  padding: 8px 16px;
+  text-decoration: none;
+  transition: background-color .3s;
+  border: 1px solid #ddd;
+  margin: 0 4px;
+}
+
+.pagination a.active {
+  background-color: #4CAF50;
+  color: white;
+  border: 1px solid #4CAF50;
+}
+
+.pagination a:hover:not(.active) {background-color: #ddd;}
+
+.table {
+margin-left : auto;
+margin-right : auto;
+}
+h3{
+text-align : center;
+}
     </style>
     
   </head>
   <body>
   <h3>사원등록페이지</h3>
     <form name = "empForm" action="../myinfo" method="post">
-  <table border = "1">
+  <table border = "1" class = "table">
       <tr>
         <th> <label>사원번호 :</label></th>
         <td> <input type="text" name="emp_id" /></br></td>
@@ -48,8 +82,14 @@
       </form>
       
 
-    <h3>사원리스트</h3>
-  		<table border = "1">
+    <h3>사원리스트
+    <select class = 'right' name = 'pageCnt' id = 'pageCnt'>
+      <option value = '5'>5건씩</option>
+      <option value = '10' selected>10건씩</option>
+      <option value = '30'>30건씩</option>
+    </select>
+    </h3>
+  		<table border = "1" class = "table">
       <thead>
         <tr>
           <th>사원번호</th>
@@ -64,7 +104,10 @@
       </thead>
       <tbody id="list"></tbody>
     </table>
-    <div id = "paging"></div>
+    <br>
+    <div class="center">
+    <div id = "paging" class="pagination"></div>
+    </div>
     <br><br>
     <script src = "../js/empList.js">
      
