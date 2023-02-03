@@ -12,6 +12,14 @@ public class EmpServiceImpl implements EmpService{ //jdbc 활용 db처리
 	public List<EmpVO> empList() {
 		return dao.empList();
 	}
-	
-	
+
+	@Override
+	public int addEmp(EmpVO emp) {
+		return dao.insertEmp(emp);
+	}
+
+	@Override
+	public EmpVO getEmp(int empId) {
+		return dao.searchEmp(empId);
+	}	
 }
