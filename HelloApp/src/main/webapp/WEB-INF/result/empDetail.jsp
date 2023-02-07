@@ -3,12 +3,11 @@
 	pageEncoding="UTF-8"%>
 <jsp:include page="../includes/header.jsp"></jsp:include>
 <%
-EmpVO emp = (EmpVO) request.getAttribute("searchVO");
-Integer age = (Integer) request.getAttribute("myAge");
-String id = (String) request.getAttribute("loginId");
+	EmpVO emp = (EmpVO) request.getAttribute("searchVO");
 %>
-<%=age%>,
-<%=id%>
+<%
+	String id = (String) session.getAttribute("id");
+%>
 <h3>현재 페이지는 empDetail.do의 결과 empDetail.jsp입니다.</h3>
 <table class="table">
 	<tr>
@@ -31,14 +30,19 @@ String id = (String) request.getAttribute("loginId");
 		<th>직무</th>
 		<td><%=emp.getJobId()%></td>
 	</tr>
+	<%
+	if (id != null) {
+	%>
 	<tr>
 		<td colspan="2" align="center">
-			<button class="btn btn-primary" 
-			onclick = "location.href='empModForm.do?id=<%=emp.getEmployeeId()%>'">수정</button>
-			<button class="btn btn-warning">삭제</button>
+			<button class="btn btn-primary"
+				onclick="location.href='empModForm.do?id=<%=emp.getEmployeeId()%>'">수정</button>
+			<button class="btn btn-warning"
+				onclick="location.href='empRemove.do?eid=<%=emp.getEmployeeId()%>'">삭제</button>
+			<!--empRemove.do?id=?? removeEmp(int id) 삭제할때는 vo타입필요없음 -->
 	</tr>
+	<%
+	}
+	%>
 </table>
-
-
-
 <jsp:include page="../includes/footer.jsp"></jsp:include>

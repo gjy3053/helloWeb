@@ -6,8 +6,7 @@
     pageEncoding="UTF-8"%>
 <jsp:include page="../includes/header.jsp"></jsp:include>
 	<%
-		EmpService service = new EmpServiceImpl();
-		List<EmpVO> list = service.empList();
+		List<EmpVO> list = (List<EmpVO>) request.getAttribute("empList");
 	%>
 	<h3>사원목록(EmpControl.do의 결과페이지.)</h3>
 	<table class = "table">

@@ -17,8 +17,14 @@ import co.yedam.emp.command.EmpForm;
 import co.yedam.emp.command.EmpList;
 import co.yedam.emp.command.EmpModControl;
 import co.yedam.emp.command.EmpModFormControl;
-import co.yedam.emp.command.LoginControl;
+import co.yedam.emp.command.EmpRemoveControl;
 import co.yedam.emp.command.ServiceControl;
+import co.yedam.member.command.LoginControl;
+import co.yedam.member.command.LoginFormControl;
+import co.yedam.member.command.LogoutControl;
+import co.yedam.member.command.MemberListControl;
+import co.yedam.member.command.SignOnControl;
+import co.yedam.member.command.SignOnFormControl;
 
 @WebServlet("*.do") //똑같은 url있으면안된다
 public class FrontController extends HttpServlet{
@@ -35,7 +41,7 @@ public class FrontController extends HttpServlet{
 		//첫페이지 지정
 		map.put("/main.do", new MainControl());
 		map.put("/service.do", new ServiceControl());
-		map.put("/login.do", new LoginControl());
+		map.put("/errorPage.do", new ErrorPage());
 		//get : 목록출력(json)요청, post : 입력처리,
 		map.put("/employee.do", new EmpControll());
 		//xxxForm.do -> 페이지 오픈
@@ -43,7 +49,16 @@ public class FrontController extends HttpServlet{
 		map.put("/empList.do", new EmpList()); //목록페이지
 		map.put("/empDetail.do",new EmpDetailControl()); //상세페이지
 		map.put("/empModForm.do", new EmpModFormControl()); //수정화면페이지
-	//	map.put("/emdModify.do", new EmpModControl()); //수정처리페이지
+		map.put("/empModify.do", new EmpModControl()); //수정처리페이지
+		map.put("/empRemove.do", new EmpRemoveControl());
+		
+		//회원관리메뉴
+		map.put("/loginForm.do", new LoginFormControl()); //로그인화면
+		map.put("/login.do", new LoginControl()); //로그인 처리
+		map.put("/logout.do", new LogoutControl());//로그아웃 처리
+		map.put("/signOnForm.do", new SignOnFormControl()); //회원가입화면
+		map.put("/signon.do", new SignOnControl()); //회원가입 처리
+		map.put("/memberList.do", new MemberListControl()); //목록출력
 	}
 	
 	@Override
