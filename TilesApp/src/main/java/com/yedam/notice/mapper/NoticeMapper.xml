@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yedam.notice.mapper.NoticeMapper"> <!--namespace는 클래스라고 생각하기 -->
+	<select id="selectList" resultType="NoticeVO">
+		SELECT * FROM tbl_notice
+		order by notice_id desc
+	</select>
+
+	<select id="searchOne" resultType="NoticeVO">
+		SELECT * FROM tbl_notice WHERE
+		notice_id=#{nid}
+	</select>
+
+	<insert id="insertNotice" parameterType="NoticeVO"><!--리턴타입 어차피 int라서 따로 정의 
+			안해도된다 -->
+		INSERT INTO tbl_notice(notice_id, notice_writer, notice_title, notice_subject, attach_file)
+		VALUES(notice_seq.nextval, #{noticeWriter},#{noticeTitle}, #{noticeSubject}, #{attachFile})
+	</insert>
+
+	<update id="updateNotice" parameterType="NoticeVO">
+		update tbl_notice set
+		notice_title=#{noticeTitle} ,notice_subject=#{noticeSubject} where
+		notice_id=#{noticeId}
+	</update>
+
+	<delete id="deleteNotice" parameterType="int">
+		delete from tbl_notice
+		where notice_id=#{nid}
+	</delete>
+	
+	<update id="increaseCnt" parameterType = "int">
+	UPDATE tbl_notice
+	SET hit_count =hit_count+1
+	WHERE notice_id = #{nid}
+	</update>
+</mapper>
