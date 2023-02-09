@@ -15,7 +15,7 @@
     </head>
     <body>
     	<%
-    		String id = (String)session.getAttribute("id");
+    		String id = (String)session.getAttribute("logId");
     	%>
         <div class="d-flex" id="wrapper">
             <!-- Sidebar-->

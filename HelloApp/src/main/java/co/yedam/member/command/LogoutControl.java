@@ -20,6 +20,8 @@ public class LogoutControl implements Command {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		
+	
 
 	}
 
