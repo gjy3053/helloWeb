@@ -28,22 +28,32 @@ public class Login implements Command {
 
 		MemberService service = new MemberServiceMybatis();
 		MemberVO rvo = service.login(vo);
+		String page="";
 
 		if (rvo == null) {
 			req.setAttribute("result","회원정보확인하세요");
-			return "member/login.tiles"; //page="mypage"
+			page="login";
+			
+			//return "member/login.tiles"; //page="mypage"
+			
 
 		} else {
+			//세션에 로그인정보담음
 			HttpSession session = req.getSession();
-			session.setAttribute("logId", rvo.getMemberId());
-			session.setAttribute("logName", rvo.getMemberName());
-			req.setAttribute("vo", service.login(vo));
+			MemberVO mvo = service.getMember(id);
+			session.setAttribute("logId", mvo.getMemberId());
+			session.setAttribute("logName", mvo.getMemberName());
+			session.setAttribute("Auth", mvo.getResponsibility());
 			
-		//	MemberVO mvo = service.getMember(id);
-		//	session.setAttribute("vo", mvo);
-			return "member/mypage.tiles";
+			MemberVO vo_1 = service.getMember(id);
+			req.setAttribute("vo", vo_1);
+			
+			//session.setAttribute("vo", mvo);
+			page="mypage";
+			//return "member/mypage.tiles";
 
 		}
+		return "member/"+page+".tiles";
 	}
 
 }

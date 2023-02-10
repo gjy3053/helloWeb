@@ -11,5 +11,6 @@ public interface MemberService {  //기능구현은 service에 있다
 	public List<MemberVO> memberList();
 	public MemberVO getMember(String id);
 	public int modifyMember(MemberVO member); //수정
-	
+	public int removeMember(String mid);//회원삭제
+
 }

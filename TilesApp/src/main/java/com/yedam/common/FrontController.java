@@ -46,7 +46,14 @@ public class FrontController extends HttpServlet{
 		map.put("/mypage.do", new myPage()); //마이페이지 겸 수정화면
 		map.put("/logout.do", new Logout());
 		map.put("/modifyMember.do", new ModifyMember()); 
+		map.put("/imageUpload.do", new ImageUpload());
 		
+		//관리자 회원관리
+		map.put("/memberManageForm.do", new MemberManager());
+		map.put("/memberList.do", new MemberList());
+		map.put("/addMember.do", new AddMember());
+		map.put("/removeMember.do", new RemoveMember());
+		map.put("/modifyMember2.do", new modifyMember2());
 		
 	}
 	

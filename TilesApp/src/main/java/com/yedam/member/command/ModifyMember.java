@@ -33,9 +33,6 @@ public class ModifyMember implements Command {
 		MemberService service = new MemberServiceMybatis();
 		service.modifyMember(vo);
 		
-		//Gson gson = new GsonBuilder().create();
-		//String json = gson.toJson(vo);
-		
 		
 		return "main/main.tiles";
 	}
