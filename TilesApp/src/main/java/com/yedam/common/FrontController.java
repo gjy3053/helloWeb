@@ -31,9 +31,14 @@ public class FrontController extends HttpServlet{
 		map.put("/second.do", new SecondControl());
 		//공지사항
 		map.put("/noticeList.do", new NoticeList());
+		map.put("/noticeListWithTables.do", new NoticeListTable());
 		map.put("/noticeDetail.do", new NoticeDetail());
 		map.put("/noticeForm.do", new NoticeForm());//글등록화면
 		map.put("/noticeAdd.do", new NoticeAdd());//글등록처리
+		map.put("/noticeAddJson.do", new NoticeAddJson()); //datatable연습용
+		map.put("/noticeListJson.do", new NoticeListJson());
+		map.put("/noticeListAjax.do", new NoticeListAjax());
+		map.put("/noticeListAjaxDel.do", new NoticeListAjaxDel());
 		
 		// 댓글부분
 		map.put("/replyList.do", new ReplyList()); //댓글목록, 여기로 들어가면 json형태의 댓글 보임

@@ -1,6 +1,6 @@
 package com.yedam.notice.vo;
 
-import java.sql.Date;
+import java.util.Date;
 
 import lombok.Data;
 @Data
